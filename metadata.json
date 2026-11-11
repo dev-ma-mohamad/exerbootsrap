@@ -1,0 +1,6 @@
+{
+  "name": "SkillUp Academy - Bootstrap 5 Project & Defense Coach",
+  "description": "Bootstrap 5 Interactive Academy - أكاديمية تفاعلية شاملة لتعليم Bootstrap 5 باللغة العربية مع مسار الـ 20 مرحلة، محاكي شبكة الـ 12 عمود، مكتبة المكونات، المختبر البرمجي الحي، المشاريع التطبيقية، التحليل الأكاديمي وملف العرض والمناقشة.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,450 @@
+/* ==========================================================================
+   Bootstrap 5 Interactive Academy - Custom Stylesheet (RTL)
+   ========================================================================== */
+
+:root {
+  --bs-font-sans-serif: 'Cairo', 'Tajawal', system-ui, -apple-system, sans-serif;
+  --bs-font-monospace: 'JetBrains Mono', 'Fira Code', monospace;
+  --bs-primary: #0d6efd;
+  --bs-primary-rgb: 13, 110, 253;
+  --bs-purple: #7952b3;
+  --bs-purple-rgb: 121, 82, 179;
+  --bs-indigo: #6610f2;
+  --app-sidebar-width: 290px;
+  --app-header-height: 72px;
+  --app-bg-gradient: linear-gradient(135deg, #f8f9fc 0%, #eef2f9 100%);
+  --app-card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --app-card-hover-shadow: 0 10px 30px rgba(13, 110, 253, 0.12);
+}
+
+[data-bs-theme="dark"] {
+  --app-bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+  --app-card-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  --app-card-hover-shadow: 0 10px 30px rgba(121, 82, 179, 0.25);
+}
+
+/* Base Typographic & General Styling */
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--bs-font-sans-serif);
+  line-height: 1.75;
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Code & Pre Formatting (Strict LTR preservation for syntax) */
+pre, code, kbd, samp {
+  font-family: var(--bs-font-monospace);
+}
+
+pre {
+  direction: ltr !important;
+  text-align: left !important;
+  border-radius: 0.75rem;
+}
+
+code {
+  font-size: 0.9em;
+  padding: 0.2em 0.4em;
+  border-radius: 0.375rem;
+}
+
+pre code {
+  padding: 0;
+  font-size: 0.875rem;
+  background-color: transparent !important;
+}
+
+/* Layout Architecture */
+.app-wrapper {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.app-sidebar {
+  width: var(--app-sidebar-width);
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  z-index: 1040;
+  background: var(--bs-body-bg);
+  border-left: 1px solid var(--bs-border-color);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+}
+
+.app-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bs-tertiary-bg);
+}
+
+.app-topbar {
+  height: var(--app-header-height);
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  background: rgba(var(--bs-body-bg-rgb), 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--bs-border-color);
+  display: flex;
+  align-items: center;
+}
+
+.app-content {
+  flex: 1;
+  padding: 1.75rem;
+}
+
+@media (max-width: 991.98px) {
+  .app-sidebar {
+    position: fixed;
+    right: 0;
+    top: 0;
+    transform: translateX(100%);
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .app-sidebar.show {
+    transform: translateX(0);
+  }
+
+  .app-sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1035;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+  }
+
+  .app-sidebar-backdrop.show {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bs-border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bs-secondary-color);
+}
+
+/* Brand Wordmark */
+.brand-badge {
+  background: linear-gradient(135deg, #7952b3 0%, #0d6efd 100%);
+  color: #fff;
+  border-radius: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  box-shadow: 0 4px 12px rgba(121, 82, 179, 0.35);
+}
+
+/* Navigation Links in Sidebar */
+.nav-link-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 1rem;
+  border-radius: 0.75rem;
+  color: var(--bs-body-color);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  margin-bottom: 0.25rem;
+  border: 1px solid transparent;
+}
+
+.nav-link-item:hover {
+  background-color: var(--bs-tertiary-bg);
+  color: var(--bs-primary);
+  border-color: var(--bs-border-color-translucent);
+}
+
+.nav-link-item.active {
+  background: linear-gradient(135deg, rgba(13, 110, 253, 0.12) 0%, rgba(121, 82, 179, 0.12) 100%);
+  color: var(--bs-primary);
+  border-color: rgba(13, 110, 253, 0.3);
+  font-weight: 700;
+}
+
+[data-bs-theme="dark"] .nav-link-item.active {
+  background: linear-gradient(135deg, rgba(13, 110, 253, 0.25) 0%, rgba(121, 82, 179, 0.25) 100%);
+  color: #70aaff;
+  border-color: rgba(13, 110, 253, 0.5);
+}
+
+/* Custom Interactive Card Styles */
+.custom-card {
+  border-radius: 1.25rem;
+  border: 1px solid var(--bs-border-color);
+  background-color: var(--bs-body-bg);
+  box-shadow: var(--app-card-shadow);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.custom-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--app-card-hover-shadow);
+}
+
+/* Roadmap Grid & Nodes */
+.roadmap-container {
+  position: relative;
+  padding: 2rem 1rem;
+}
+
+.roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.roadmap-node {
+  border-radius: 1.25rem;
+  padding: 1.25rem;
+  border: 2px solid var(--bs-border-color);
+  background-color: var(--bs-body-bg);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.roadmap-node:hover {
+  border-color: var(--bs-primary);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(13, 110, 253, 0.15);
+}
+
+.roadmap-node.completed {
+  border-color: var(--bs-success);
+  background: linear-gradient(135deg, rgba(25, 135, 84, 0.05) 0%, var(--bs-body-bg) 100%);
+}
+
+.roadmap-node.active-stage {
+  border-color: var(--bs-purple);
+  box-shadow: 0 0 0 4px rgba(121, 82, 179, 0.2);
+}
+
+.roadmap-badge {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+/* Interactive Grid Visualizer Component */
+.grid-visualizer-bar {
+  background: var(--bs-tertiary-bg);
+  border: 1px dashed var(--bs-border-color);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.grid-col-box {
+  background: rgba(13, 110, 253, 0.15);
+  border: 1px solid var(--bs-primary);
+  color: var(--bs-primary);
+  border-radius: 0.5rem;
+  padding: 1rem 0.5rem;
+  font-weight: 700;
+  text-align: center;
+  transition: all 0.3s ease;
+  margin-bottom: 0.5rem;
+}
+
+.grid-col-box:hover {
+  background: rgba(13, 110, 253, 0.25);
+}
+
+/* Syntax Highlighting Custom Container */
+.code-container {
+  position: relative;
+  border-radius: 1rem;
+  background-color: #1e1e2f;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  background-color: #161623;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+.code-copy-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #e2e8f0;
+  padding: 0.3rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.code-copy-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Live Preview Frame Container */
+.live-preview-box {
+  border: 1px solid var(--bs-border-color);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  background: var(--bs-body-bg);
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Playground Split View */
+.playground-editor-area {
+  min-height: 380px;
+  font-family: var(--bs-font-monospace);
+  font-size: 0.95rem;
+  direction: ltr;
+  text-align: left;
+  border-radius: 1rem;
+  resize: vertical;
+}
+
+/* Visual Flow Diagrams (الرسوم التوضيحية البصرية) */
+.flow-diagram-box {
+  background: var(--bs-tertiary-bg);
+  border: 1px solid var(--bs-border-color);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+}
+
+.flow-step-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bs-primary);
+  font-size: 1.5rem;
+}
+
+/* Quiz UI Custom styles */
+.quiz-option-btn {
+  width: 100%;
+  text-align: right;
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  border: 2px solid var(--bs-border-color);
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.quiz-option-btn:hover {
+  border-color: var(--bs-primary);
+  background-color: rgba(13, 110, 253, 0.04);
+}
+
+.quiz-option-btn.selected {
+  border-color: var(--bs-primary);
+  background-color: rgba(13, 110, 253, 0.08);
+}
+
+.quiz-option-btn.correct {
+  border-color: var(--bs-success) !important;
+  background-color: rgba(25, 135, 84, 0.12) !important;
+}
+
+.quiz-option-btn.incorrect {
+  border-color: var(--bs-danger) !important;
+  background-color: rgba(220, 53, 69, 0.12) !important;
+}
+
+/* Certificate of Completion Styling */
+.certificate-frame {
+  border: 12px double #0d6efd;
+  border-radius: 1.5rem;
+  padding: 3rem;
+  background: radial-gradient(circle at center, #ffffff 0%, #f4f6fa 100%);
+  color: #1e293b;
+  position: relative;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+}
+
+[data-bs-theme="dark"] .certificate-frame {
+  background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 100%);
+  color: #f8fafc;
+  border-color: #7952b3;
+}
+
+/* Pulse Animation for Active Stage */
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(121, 82, 179, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(121, 82, 179, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(121, 82, 179, 0); }
+}
+
+.pulse-glow {
+  animation: pulseGlow 2s infinite;
+}
+
+/* Print Utilities for Presentation & Certificate */
+@media print {
+  .app-sidebar, .app-topbar, .btn-no-print {
+    display: none !important;
+  }
+  .app-main {
+    width: 100% !important;
+    background: #fff !important;
+  }
+  .app-content {
+    padding: 0 !important;
+  }
+  .certificate-frame {
+    box-shadow: none !important;
+    border-width: 6px !important;
+  }
+}

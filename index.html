@@ -1,0 +1,904 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-bs-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bootstrap 5 Interactive Academy - أكاديمية بوتستراب التفاعلية</title>
+    <meta name="description" content="أكاديمية تفاعلية متطورة لتعليم Bootstrap 5 باللغة العربية من الصفر حتى الاحتراف مع محاكي الشبكة والمختبر البرمجي والتحليل الأكاديمي للعرض." />
+    <meta property="og:title" content="Bootstrap 5 Interactive Academy" />
+    <meta property="og:description" content="أكاديمية تفاعلية شاملة لتعلم وإتقان Bootstrap 5 باللغة العربية مع التطبيق العملي والعرض الأكاديمي." />
+    
+    <!-- Google Fonts (Cairo & Tajawal & JetBrains Mono) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Tajawal:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5.3.3 RTL CSS via jsDelivr CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css">
+    
+    <!-- Bootstrap Icons 1.11.3 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Custom Academy Styles -->
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
+
+    <!-- Main Application Shell -->
+    <div class="app-wrapper">
+      
+      <!-- Mobile Sidebar Backdrop -->
+      <div class="app-sidebar-backdrop" id="sidebar-backdrop"></div>
+
+      <!-- Left / Right Navigation Sidebar (RTL) -->
+      <aside class="app-sidebar" id="app-sidebar">
+        <!-- Sidebar Header / Brand -->
+        <div class="p-4 border-bottom d-flex align-items-center justify-content-between">
+          <a href="#" class="d-flex align-items-center gap-2 text-decoration-none text-body" data-section-target="dashboard">
+            <div class="brand-badge fs-5">
+              <i class="bi bi-bootstrap-fill"></i> BS5
+            </div>
+            <div>
+              <div class="fw-black fs-5 leading-tight">Interactive Academy</div>
+              <small class="text-primary fw-bold">أكاديمية بوتستراب التفاعلية</small>
+            </div>
+          </a>
+        </div>
+
+        <!-- User Progress Widget in Sidebar -->
+        <div class="p-3 mx-3 my-3 bg-body-tertiary rounded-4 border">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="small fw-bold text-muted">تقدمك في المسار:</span>
+            <span class="badge bg-primary rounded-pill user-progress-text">0%</span>
+          </div>
+          <div class="progress" style="height: 8px;">
+            <div class="progress-bar user-progress-bar bg-primary" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+
+        <!-- Sidebar Navigation Menu -->
+        <div class="p-3 flex-grow-1 overflow-y-auto">
+          <small class="text-uppercase text-muted fw-bold px-3 mb-2 d-block fs-7">القائمة الرئيسية</small>
+          
+          <a href="#" class="nav-link-item active" data-section-target="dashboard">
+            <i class="bi bi-speedometer2 text-primary"></i>
+            <span>لوحة التحكم (Dashboard)</span>
+          </a>
+
+          <a href="#" class="nav-link-item" data-section-target="roadmap">
+            <i class="bi bi-map-fill text-success"></i>
+            <span>خريطة التعلم (20 مرحلة)</span>
+          </a>
+
+          <a href="#" class="nav-link-item" data-section-target="lessons">
+            <i class="bi bi-journal-bookmark-fill text-purple" style="color: #7952b3;"></i>
+            <span>الدروس التفاعلية (6 أركان)</span>
+          </a>
+
+          <a href="#" class="nav-link-item" data-section-target="grid-lab">
+            <i class="bi bi-grid-3x3-gap-fill text-danger"></i>
+            <span>مختبر الشبكة (12 عمود)</span>
+          </a>
+
+          <a href="#" class="nav-link-item" data-section-target="components">
+            <i class="bi bi-puzzle-fill text-warning"></i>
+            <span>مكتبة المكونات (Components)</span>
+          </a>
+
+          <a href="#" class="nav-link-item" data-section-target="utilities">
+            <i class="bi bi-sliders text-info"></i>
+            <span>أدوات التنسيق (CSS Utilities)</span>
+          </a>
+
+          <a href="#" class="nav-link-item" data-section-target="playground">
+            <i class="bi bi-terminal-split text-primary"></i>
+            <span>المختبر البرمجي (Playground)</span>
+          </a>
+
+          <small class="text-uppercase text-muted fw-bold px-3 my-3 d-block fs-7">التطبيق والمناقشة</small>
+
+          <a href="#" class="nav-link-item" data-section-target="projects">
+            <i class="bi bi-folder-check text-success"></i>
+            <span>مشاريع تطبيقية (7 مشاريع)</span>
+          </a>
+
+          <a href="#" class="nav-link-item" data-section-target="quiz">
+            <i class="bi bi-award-fill text-warning"></i>
+            <span>الاختبار النهائي والشهادة</span>
+          </a>
+
+          <a href="#" class="nav-link-item" data-section-target="academic-analysis">
+            <i class="bi bi-mortarboard-fill text-purple" style="color: #7952b3;"></i>
+            <span>التحليل الأكاديمي (Analyse)</span>
+          </a>
+
+          <a href="#" class="nav-link-item" data-section-target="presentation">
+            <i class="bi bi-easel-fill text-danger"></i>
+            <span>عرض المناقشة (Présentation)</span>
+          </a>
+        </div>
+
+        <!-- Sidebar Footer -->
+        <div class="p-3 border-top mt-auto bg-body-tertiary text-center">
+          <small class="text-muted d-block mb-1">مشروع أكاديمي متكامل 100%</small>
+          <span class="badge bg-primary-subtle text-primary fw-bold">Bootstrap 5.3.3 + Vanilla JS</span>
+        </div>
+      </aside>
+
+      <!-- Main Application Container -->
+      <div class="app-main">
+        
+        <!-- Topbar Header -->
+        <header class="app-topbar px-4 justify-content-between">
+          <div class="d-flex align-items-center gap-3">
+            <button class="btn btn-outline-secondary d-lg-none rounded-3 p-2" id="sidebar-toggle-btn" aria-label="فتح القائمة">
+              <i class="bi bi-list fs-5"></i>
+            </button>
+            <div class="d-none d-sm-block">
+              <h5 class="fw-bold mb-0 text-primary">أكاديمية Bootstrap 5 التفاعلية</h5>
+              <small class="text-muted">منصة التعليم والتطبيق العملي والتحليل الأكاديمي</small>
+            </div>
+          </div>
+
+          <!-- Quick Actions & Theme Switcher -->
+          <div class="d-flex align-items-center gap-2">
+            <button class="btn btn-outline-primary rounded-pill btn-sm px-3 d-none d-md-flex align-items-center gap-2" data-section-target="playground">
+              <i class="bi bi-play-circle-fill"></i>
+              <span>مختبر الأكواد</span>
+            </button>
+
+            <button class="btn btn-outline-secondary rounded-3 p-2 d-flex align-items-center justify-content-center" id="theme-toggle-btn" title="تبديل الوضع الليلي / النهاري">
+              <i class="bi bi-moon-stars-fill text-primary" id="theme-icon"></i>
+            </button>
+          </div>
+        </header>
+
+        <!-- Dynamic Content Body -->
+        <main class="app-content">
+
+          <!-- ===================================================================
+               SECTION 1: DASHBOARD (الصفحة الرئيسية)
+               =================================================================== -->
+          <section id="section-dashboard" class="academy-section animate__animated animate__fadeIn">
+            
+            <!-- Hero Banner -->
+            <div class="card border-0 rounded-4 p-4 p-md-5 mb-4 text-white shadow-lg position-relative overflow-hidden" style="background: linear-gradient(135deg, #0d6efd 0%, #6610f2 50%, #7952b3 100%);">
+              <div class="position-relative z-1 max-w-3xl">
+                <span class="badge bg-white text-primary px-3 py-2 rounded-pill fw-bold mb-3 shadow-sm">
+                  <i class="bi bi-stars text-warning me-1"></i> النسخة الأكاديمية الرسمية 2025
+                </span>
+                <h1 class="display-4 fw-black mb-3">Bootstrap 5 Interactive Academy</h1>
+                <h3 class="fw-bold text-white-50 mb-3">أكاديمية تفاعلية متطورة لتعلم Bootstrap باللغة العربية</h3>
+                <p class="lead text-white-50 mb-4 col-lg-10">
+                  منصة تعليمية متكاملة تنقلك من الصفر حتى الاحتراف من خلال الشرح البصري، المخططات الهندسية، تفكيك الكود سطر بسطر، محاكي الشبكة الحية، والمشاريع الجاهزة للمناقشة أمام الأستاذ.
+                </p>
+                <div class="d-flex flex-wrap gap-3">
+                  <button class="btn btn-light btn-lg rounded-pill px-4 fw-bold text-primary shadow" data-section-target="roadmap">
+                    <i class="bi bi-play-circle-fill me-1"></i> ابدأ مسار التعلم الآن
+                  </button>
+                  <button class="btn btn-outline-light btn-lg rounded-pill px-4 fw-bold" data-section-target="grid-lab">
+                    <i class="bi bi-grid-3x3 me-1"></i> تجربة محاكي الشبكة
+                  </button>
+                  <button class="btn btn-outline-light btn-lg rounded-pill px-4 fw-bold" data-section-target="presentation">
+                    <i class="bi bi-easel me-1"></i> ملف العرض الأكاديمي
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Learning Metrics & Highlights -->
+            <div class="row g-3 mb-4">
+              <div class="col-sm-6 col-xl-3">
+                <div class="card custom-card p-4 border">
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="text-muted small fw-bold">الدروس الشاملة</span>
+                    <div class="p-2 bg-primary-subtle text-primary rounded-3"><i class="bi bi-journal-check fs-5"></i></div>
+                  </div>
+                  <h3 class="fw-black text-primary mb-1">20 مرحلة</h3>
+                  <small class="text-muted">مغطاة بالأركان الستة كاملة</small>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xl-3">
+                <div class="card custom-card p-4 border">
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="text-muted small fw-bold">المكونات التفاعلية</span>
+                    <div class="p-2 bg-success-subtle text-success rounded-3"><i class="bi bi-puzzle fs-5"></i></div>
+                  </div>
+                  <h3 class="fw-black text-success mb-1">14 مكوناً</h3>
+                  <small class="text-muted">مع المعاينة والأكواد الجاهزة</small>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xl-3">
+                <div class="card custom-card p-4 border">
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="text-muted small fw-bold">أدوات التنسيق</span>
+                    <div class="p-2 bg-purple-subtle text-purple rounded-3" style="color: #7952b3;"><i class="bi bi-sliders fs-5"></i></div>
+                  </div>
+                  <h3 class="fw-black text-purple mb-1" style="color: #7952b3;">11 مجموعة</h3>
+                  <small class="text-muted">هوامش، فليكس، ألوان، حدود</small>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xl-3">
+                <div class="card custom-card p-4 border">
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="text-muted small fw-bold">المشاريع المصغرة</span>
+                    <div class="p-2 bg-warning-subtle text-warning rounded-3"><i class="bi bi-folder-check fs-5"></i></div>
+                  </div>
+                  <h3 class="fw-black text-warning mb-1">7 مشاريع</h3>
+                  <small class="text-muted">تطبيقية واقعية خطوة بخطوة</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Why Bootstrap? & What You Will Learn (القيم التعليمية) -->
+            <div class="row g-4 mb-4">
+              <div class="col-lg-6">
+                <div class="card custom-card h-100 p-4 border">
+                  <div class="d-flex align-items-center gap-2 mb-3">
+                    <div class="p-2 bg-primary text-white rounded-3"><i class="bi bi-patch-question fs-4"></i></div>
+                    <h4 class="fw-bold text-primary mb-0">لماذا Bootstrap 5 تحديداً؟</h4>
+                  </div>
+                  <p class="text-muted leading-relaxed">
+                    يعد Bootstrap المعيار الأكثر انتشاراً واعتماداً في الشركات والمشاريع الجامعية؛ فهو يمنحك:
+                  </p>
+                  <ul class="list-unstyled d-flex flex-column gap-2.5">
+                    <li class="d-flex align-items-start gap-2">
+                      <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                      <span><strong>إنتاجية مضاعفة:</strong> بناء نظام شبكة وقائمة هاتف كاملة في دقائق بدل أيام.</span>
+                    </li>
+                    <li class="d-flex align-items-start gap-2">
+                      <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                      <span><strong>الاستغناء عن jQuery:</strong> الاعتماد 100% على Vanilla JS الحديث والخفيف.</span>
+                    </li>
+                    <li class="d-flex align-items-start gap-2">
+                      <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                      <span><strong>دعم كامل للغة العربية (RTL):</strong> تحول تلقائي للهوامش والاتجاهات عبر Start و End.</span>
+                    </li>
+                    <li class="d-flex align-items-start gap-2">
+                      <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                      <span><strong>الوضع الليلي المدمج:</strong> تحويل الموقع للثيم الداكن تلقائياً بسطر واحد.</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <div class="card custom-card h-100 p-4 border">
+                  <div class="d-flex align-items-center gap-2 mb-3">
+                    <div class="p-2 bg-success text-white rounded-3"><i class="bi bi-compass fs-4"></i></div>
+                    <h4 class="fw-bold text-success mb-0">ماذا ستتعلم في هذه الأكاديمية؟</h4>
+                  </div>
+                  <p class="text-muted leading-relaxed">
+                    تم بناء هذا الموقع ليكون أستاذاً تفاعلياً وموجهاً بيداغوجياً يعلمك:
+                  </p>
+                  <div class="row g-2">
+                    <div class="col-6">
+                      <div class="p-3 bg-body-tertiary rounded-3 border">
+                        <h6 class="fw-bold text-primary mb-1">1. الفهم النظري</h6>
+                        <small class="text-muted">التعريف، لماذا، ومتى نستخدم كل عنصر بدقة.</small>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="p-3 bg-body-tertiary rounded-3 border">
+                        <h6 class="fw-bold text-success mb-1">2. الشرح البصري</h6>
+                        <small class="text-muted">مخططات توضيحية وأسهم تشرح كيف يعمل العنصر.</small>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="p-3 bg-body-tertiary rounded-3 border">
+                        <h6 class="fw-bold text-purple mb-1" style="color: #7952b3;">3. تفكيك الكود</h6>
+                        <small class="text-muted">تلوين الأكواد مع شرح وظيفة كل كلاس سطر بسطر.</small>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="p-3 bg-body-tertiary rounded-3 border">
+                        <h6 class="fw-bold text-danger mb-1">4. المعاينة المباشرة</h6>
+                        <small class="text-muted">رؤية النتيجة الفعلية والتعديل عليها فورياً.</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Start Feature Cards Grid -->
+            <div class="mb-4">
+              <h4 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                <i class="bi bi-grid-fill text-primary"></i> بوابات الأكاديمية السريعة
+              </h4>
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <div class="card custom-card p-4 border h-100" role="button" data-section-target="roadmap">
+                    <div class="p-3 bg-primary bg-opacity-10 text-primary rounded-3 d-inline-block mb-3"><i class="bi bi-map fs-3"></i></div>
+                    <h5 class="fw-bold">خريطة التعلم الشاملة</h5>
+                    <p class="text-muted small">مسار مرتب بـ 20 محطة متسلسلة من التثبيت حتى المشروع النهائي.</p>
+                    <span class="text-primary fw-bold small mt-auto">استكشف الخريطة <i class="bi bi-arrow-left"></i></span>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card custom-card p-4 border h-100" role="button" data-section-target="grid-lab">
+                    <div class="p-3 bg-danger bg-opacity-10 text-danger rounded-3 d-inline-block mb-3"><i class="bi bi-grid-3x3 fs-3"></i></div>
+                    <h5 class="fw-bold">مختبر شبكة الـ 12 عمود</h5>
+                    <p class="text-muted small">شاهد تقسيم الأعمدة الحية وتجاوبها مع الشاشات مع شريط التحكم التفاعلي.</p>
+                    <span class="text-danger fw-bold small mt-auto">افتح المختبر <i class="bi bi-arrow-left"></i></span>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card custom-card p-4 border h-100" role="button" data-section-target="presentation">
+                    <div class="p-3 bg-purple bg-opacity-10 text-purple rounded-3 d-inline-block mb-3" style="color: #7952b3;"><i class="bi bi-easel fs-3"></i></div>
+                    <h5 class="fw-bold">ملف العرض الأكاديمي</h5>
+                    <p class="text-muted small">خطة عرض متكاملة بالعربية والفرنسية والأسئلة الشائعة لإبهار الأستاذ.</p>
+                    <span class="text-purple fw-bold small mt-auto" style="color: #7952b3;">شاهد خطة العرض <i class="bi bi-arrow-left"></i></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </section>
+
+          <!-- ===================================================================
+               SECTION 2: ROADMAP (خريطة التعلم بـ 20 مرحلة)
+               =================================================================== -->
+          <section id="section-roadmap" class="academy-section d-none animate__animated animate__fadeIn">
+            <div class="card custom-card border-0 p-4 p-md-5 mb-4">
+              <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4 border-bottom pb-4">
+                <div>
+                  <span class="badge bg-success px-3 py-2 rounded-pill mb-2">المسار البصري المعتمد</span>
+                  <h2 class="fw-black mb-1">خريطة تعلم Bootstrap 5 (Learning Roadmap)</h2>
+                  <p class="text-muted mb-0">20 مرحلة مرتبة بيداغوجياً من الأساسيات وحتى الاحتراف والمناقشة الأكاديمية.</p>
+                </div>
+                <div class="text-end">
+                  <span class="small fw-bold text-muted d-block mb-1">اضغط على أي عقدة لفتح الدرس بالتفصيل:</span>
+                  <span class="badge bg-primary rounded-pill user-progress-text">0% مكتمل</span>
+                </div>
+              </div>
+
+              <!-- Roadmap Interactive Nodes Grid -->
+              <div class="roadmap-grid" id="roadmap-grid">
+                <!-- Injected via js/main.js -->
+              </div>
+            </div>
+          </section>
+
+          <!-- ===================================================================
+               SECTION 3: LESSON VIEWER (الأركان الستة لشرح كل درس)
+               =================================================================== -->
+          <section id="section-lessons" class="academy-section d-none animate__animated animate__fadeIn">
+            <div id="lesson-viewer-container">
+              <!-- Rendered dynamically by js/main.js with the 6 pillars:
+                   1. التعريف
+                   2. الشرح البصري
+                   3. الكود البرمجي وشرح الكلاسات
+                   4. المعاينة المباشرة
+                   5. التحليل التقني
+                   6. التطبيق والتمرين
+              -->
+            </div>
+          </section>
+
+          <!-- ===================================================================
+               SECTION 4: GRID SYSTEM LAB (مختبر نظام الـ 12 عمود التفاعلي)
+               =================================================================== -->
+          <section id="section-grid-lab" class="academy-section d-none animate__animated animate__fadeIn">
+            <div class="card custom-card border-0 p-4 p-md-5 mb-4">
+              <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4 border-bottom pb-4">
+                <div>
+                  <span class="badge bg-danger px-3 py-2 rounded-pill mb-2">المختبر الهندسي</span>
+                  <h2 class="fw-black mb-1">مختبر شبكة Bootstrap 5 التفاعلي (12 Columns Grid)</h2>
+                  <p class="text-muted mb-0">تحكم في عدد الأعمدة وشاهد إعادة التوزيع الهندسي والحساب التلقائي لكلاسات col-*.</p>
+                </div>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-primary rounded-pill px-3" data-bp-btn="lg">حاسوب (Desktop)</button>
+                  <button class="btn btn-outline-primary rounded-pill px-3" data-bp-btn="md">تابلت (Tablet)</button>
+                  <button class="btn btn-outline-primary rounded-pill px-3" data-bp-btn="xs">هاتف (Mobile)</button>
+                </div>
+              </div>
+
+              <!-- Interactive Controls Bar -->
+              <div class="p-4 bg-body-tertiary rounded-4 border mb-4">
+                <div class="row align-items-center g-3">
+                  <div class="col-md-6">
+                    <label for="grid-col-slider" class="form-label fw-bold d-flex justify-content-between">
+                      <span>اختر عدد الأعمدة في السطر الواحد (.row):</span>
+                      <span class="text-primary fw-bold" id="grid-col-count-display">3 أعمدة (col-4)</span>
+                    </label>
+                    <input type="range" class="form-range" min="1" max="6" value="3" id="grid-col-slider">
+                  </div>
+                  <div class="col-md-6 text-md-end">
+                    <span class="text-muted small d-block">المجموع الرياضي الإجباري للسطر:</span>
+                    <span class="badge bg-primary fs-5 px-3 py-2 rounded-pill">12 عموداً دائماً وأبداً</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Visual Viewport Simulator Frame -->
+              <div class="mb-4 transition-all mx-auto" id="grid-simulation-viewport" style="max-width: 100%;">
+                <div class="grid-visualizer-bar">
+                  <div class="text-center text-muted small fw-bold mb-2">عرض السطر الواحد (.row g-3) :</div>
+                  <div class="row g-3" id="grid-visual-row">
+                    <!-- Dynamically populated columns -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Generated Live Code -->
+              <div class="code-container mb-4">
+                <div class="code-header">
+                  <span><i class="bi bi-code-slash me-1"></i> كود الـ HTML المتولد تلقائياً</span>
+                  <button class="code-copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('grid-generated-code').textContent); this.textContent='تم النسخ!'; setTimeout(()=>this.textContent='نسخ الكود', 2000);">
+                    نسخ الكود
+                  </button>
+                </div>
+                <pre class="p-3 m-0"><code id="grid-generated-code" class="language-html"></code></pre>
+              </div>
+
+              <!-- Deep Grid Explanation Table -->
+              <div class="card bg-body-tertiary border-0 p-4 rounded-4">
+                <h5 class="fw-bold text-primary mb-3">دليل مقارنة كلاسات الأعمدة الشائعة:</h5>
+                <div class="table-responsive">
+                  <table class="table table-bordered bg-body text-center align-middle mb-0">
+                    <thead class="table-primary">
+                      <tr>
+                        <th>الكلاس</th>
+                        <th>عدد الأعمدة المستهلكة</th>
+                        <th>النسبة المئوية من الشاشة</th>
+                        <th>عدد البطاقات الممكنة بالسطر</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td><code>col-12</code></td><td>12 عموداً</td><td>100%</td><td>بطاقة واحدة بعرض كامل (شائع للهاتف)</td></tr>
+                      <tr><td><code>col-6</code></td><td>6 أعمدة</td><td>50%</td><td>بطاقتان متساويتان في السطر</td></tr>
+                      <tr><td><code>col-4</code></td><td>4 أعمدة</td><td>33.33%</td><td>3 بطاقات متساوية (شائع للحواسيب)</td></tr>
+                      <tr><td><code>col-3</code></td><td>3 أعمدة</td><td>25%</td><td>4 بطاقات في نفس السطر</td></tr>
+                      <tr><td><code>col-2</code></td><td>عمودان</td><td>16.66%</td><td>6 بطاقات في السطر الواحد</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- ===================================================================
+               SECTION 5: COMPONENTS (مكتبة المكونات التفاعلية)
+               =================================================================== -->
+          <section id="section-components" class="academy-section d-none animate__animated animate__fadeIn">
+            <div class="card custom-card border-0 p-4 p-md-5 mb-4">
+              <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4 border-bottom pb-4">
+                <div>
+                  <span class="badge bg-warning text-dark px-3 py-2 rounded-pill mb-2">المكتبة البرمجية</span>
+                  <h2 class="fw-black mb-1">مكتبة مكونات Bootstrap 5 (Interactive Components)</h2>
+                  <p class="text-muted mb-0">جميع عناصر الواجهة الرسمية مع الكود المباشر وتفكيك الكلاسات والمعاينة الحية.</p>
+                </div>
+              </div>
+
+              <!-- Showcase Grid -->
+              <div class="row g-4" id="components-showcase-grid">
+                <!-- Dynamically injected components -->
+              </div>
+            </div>
+          </section>
+
+          <!-- ===================================================================
+               SECTION 6: CSS UTILITIES (أدوات التنسيق المساعدة)
+               =================================================================== -->
+          <section id="section-utilities" class="academy-section d-none animate__animated animate__fadeIn">
+            <div class="card custom-card border-0 p-4 p-md-5 mb-4">
+              <div class="mb-4 border-bottom pb-4">
+                <span class="badge bg-info text-dark px-3 py-2 rounded-pill mb-2">أدوات السرعة والإنتاجية</span>
+                <h2 class="fw-black mb-1">أدوات التنسيق المساعدة (Bootstrap CSS Utilities)</h2>
+                <p class="text-muted mb-0">كلاسات ذرية تضبط الهوامش، الفليكس، النصوص، الحدود، والظلال دون الحاجة لكتابة CSS مخصص.</p>
+              </div>
+
+              <div class="row g-4">
+                <!-- Utility 1: Spacing -->
+                <div class="col-md-6">
+                  <div class="card custom-card p-4 border h-100">
+                    <h5 class="fw-bold text-primary mb-2">1. الهوامش والمسافات (m-* & p-*)</h5>
+                    <p class="text-muted small">m=margin, p=padding | t=top, b=bottom, s=start, e=end, x=أفقي, y=رأسي على مقياس من 0 إلى 5.</p>
+                    <div class="p-3 bg-body-tertiary border rounded mb-3 text-center">
+                      <div class="p-3 bg-primary text-white rounded mb-2">عنصر بهامش داخلي p-3 وهامش سفلي mb-2</div>
+                      <div class="py-2 px-4 bg-success text-white rounded d-inline-block">عنصر بهامش py-2 px-4</div>
+                    </div>
+                    <code>class="p-4 mb-3 py-2 px-4 ms-auto"</code>
+                  </div>
+                </div>
+
+                <!-- Utility 2: Flexbox -->
+                <div class="col-md-6">
+                  <div class="card custom-card p-4 border h-100">
+                    <h5 class="fw-bold text-success mb-2">2. أدوات الفليكس والمحاذاة (Flexbox)</h5>
+                    <p class="text-muted small">تفعيل الفليكس، توزيع الأطراف، وتوسيط العناصر رأسياً وأفقياً بدقة.</p>
+                    <div class="p-3 bg-body-tertiary border rounded mb-3">
+                      <div class="d-flex justify-content-between align-items-center p-2 bg-light text-dark rounded">
+                        <span class="badge bg-primary">بداية</span>
+                        <span class="small text-muted">justify-content-between</span>
+                        <span class="badge bg-success">نهاية</span>
+                      </div>
+                    </div>
+                    <code>class="d-flex justify-content-between align-items-center"</code>
+                  </div>
+                </div>
+
+                <!-- Utility 3: Borders & Shadows -->
+                <div class="col-md-6">
+                  <div class="card custom-card p-4 border h-100">
+                    <h5 class="fw-bold text-danger mb-2">3. الإطارات والظلال (Borders & Shadows)</h5>
+                    <p class="text-muted small">إضافة إطارات ملونة، إزالة الحواف، وضبط الظلال الناعمة والعملاقة.</p>
+                    <div class="p-3 bg-body-tertiary border rounded mb-3 d-flex gap-2 justify-content-center">
+                      <div class="p-2 border border-primary rounded shadow-sm">shadow-sm</div>
+                      <div class="p-2 border border-success rounded shadow">shadow</div>
+                      <div class="p-2 border-0 rounded-pill shadow-lg bg-white text-dark">shadow-lg</div>
+                    </div>
+                    <code>class="border border-2 border-primary rounded-4 shadow-lg"</code>
+                  </div>
+                </div>
+
+                <!-- Utility 4: Display & Visibility -->
+                <div class="col-md-6">
+                  <div class="card custom-card p-4 border h-100">
+                    <h5 class="fw-bold text-purple mb-2" style="color: #7952b3;">4. العرض والإخفاء المتجاوب (Display)</h5>
+                    <p class="text-muted small">إخفاء العناصر على الهاتف وإظهارها على الكمبيوتر (مثل d-none d-md-block).</p>
+                    <div class="p-3 bg-body-tertiary border rounded mb-3 text-center">
+                      <div class="p-2 bg-info bg-opacity-25 rounded text-dark">
+                        <span class="d-block d-md-none fw-bold">هذا النص يظهر فقط في الهواتف!</span>
+                        <span class="d-none d-md-block fw-bold">هذا النص يظهر فقط في الحواسيب والتابلت!</span>
+                      </div>
+                    </div>
+                    <code>class="d-none d-md-block" // إخفاء في الهاتف وإظهار في الحاسوب</code>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===================================================================
+               SECTION 7: PLAYGROUND (المختبر البرمجي التفاعلي)
+               =================================================================== -->
+          <section id="section-playground" class="academy-section d-none animate__animated animate__fadeIn">
+            <div class="card custom-card border-0 p-4 p-md-5 mb-4">
+              <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4 border-bottom pb-4">
+                <div>
+                  <span class="badge bg-primary px-3 py-2 rounded-pill mb-2">المحرر الحي المباشر</span>
+                  <h2 class="fw-black mb-1">المختبر البرمجي التفاعلي (Interactive Playground)</h2>
+                  <p class="text-muted mb-0">اكتب كود HTML مع كلاسات Bootstrap وشاهد النتيجة تتحدث فورياً في الجزء المقابل.</p>
+                </div>
+                <div class="d-flex gap-2 flex-wrap">
+                  <select class="form-select rounded-pill" id="playground-template-select" style="width: auto;">
+                    <option value="hero">قالب 1: صفحة هبوط (Hero)</option>
+                    <option value="cards">قالب 2: شبكة بطاقات (Cards)</option>
+                    <option value="form">قالب 3: نموذج تسجيل (Form)</option>
+                  </select>
+                  <button class="btn btn-outline-secondary rounded-pill px-3" id="playground-reset-btn">
+                    <i class="bi bi-arrow-counterclockwise"></i> استرجاع
+                  </button>
+                  <button class="btn btn-outline-primary rounded-pill px-3" id="playground-copy-btn">
+                    <i class="bi bi-copy"></i> نسخ الكود
+                  </button>
+                  <button class="btn btn-primary rounded-pill px-4" id="playground-run-btn">
+                    <i class="bi bi-play-fill"></i> تشغيل الكود
+                  </button>
+                </div>
+              </div>
+
+              <!-- Split Screen Playground Area -->
+              <div class="row g-4">
+                <!-- Left: Code Editor -->
+                <div class="col-lg-6">
+                  <div class="card h-100 border rounded-4 overflow-hidden shadow-sm">
+                    <div class="p-3 bg-dark text-white d-flex justify-content-between align-items-center">
+                      <span class="small font-monospace"><i class="bi bi-terminal me-1"></i> محرر الأكواد (HTML & Bootstrap 5.3)</span>
+                      <span class="badge bg-secondary font-monospace">Live Editor</span>
+                    </div>
+                    <textarea id="playground-code-input" class="form-control playground-editor-area border-0 p-3 bg-dark text-white" spellcheck="false"></textarea>
+                  </div>
+                </div>
+
+                <!-- Right: Live Sandboxed Preview -->
+                <div class="col-lg-6">
+                  <div class="card h-100 border rounded-4 overflow-hidden shadow-sm">
+                    <div class="p-3 bg-body-tertiary border-bottom d-flex justify-content-between align-items-center">
+                      <span class="small fw-bold text-primary"><i class="bi bi-eye-fill me-1"></i> المعاينة الحية المباشرة (Live Preview)</span>
+                      <span class="badge bg-success-subtle text-success">تحديث فوري</span>
+                    </div>
+                    <div id="playground-live-frame" class="p-4 bg-body overflow-auto flex-grow-1" style="min-height: 380px;">
+                      <!-- Real-time code execution result -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===================================================================
+               SECTION 8: MINI PROJECTS (المشاريع التطبيقية السبعة)
+               =================================================================== -->
+          <section id="section-projects" class="academy-section d-none animate__animated animate__fadeIn">
+            <div class="card custom-card border-0 p-4 p-md-5 mb-4">
+              <div class="mb-4 border-bottom pb-4">
+                <span class="badge bg-success px-3 py-2 rounded-pill mb-2">التطبيق الواقعي</span>
+                <h2 class="fw-black mb-1">مشاريع Bootstrap 5 التطبيقية (7 Guided Projects)</h2>
+                <p class="text-muted mb-0">مشاريع مصغرة تجمع المكونات والشبكة لبناء واجهات حقيقية جاهزة للاستخدام في مشروعك.</p>
+              </div>
+
+              <div id="projects-container">
+                <!-- Dynamically injected 7 guided projects -->
+              </div>
+            </div>
+          </section>
+
+          <!-- ===================================================================
+               SECTION 9: QUIZ & CERTIFICATE (الاختبار النهائي والشهادة)
+               =================================================================== -->
+          <section id="section-quiz" class="academy-section d-none animate__animated animate__fadeIn">
+            <div class="card custom-card border-0 p-4 p-md-5 mb-4">
+              <div class="mb-4 border-bottom pb-4">
+                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill mb-2">التقييم الشامل</span>
+                <h2 class="fw-black mb-1">اختبار التحقق ونيل شهادة الإتقان</h2>
+                <p class="text-muted mb-0">أجب عن الأسئلة واكتشف مستواك، ثم احصل على شهادة إتمام المسار المعتمدة باسمك.</p>
+              </div>
+
+              <div id="quiz-active-card" class="card custom-card border shadow-sm">
+                <!-- Rendered dynamically by js/main.js -->
+              </div>
+            </div>
+          </section>
+
+          <!-- ===================================================================
+               SECTION 10: ACADEMIC ANALYSIS (التحليل التقني الأكاديمي)
+               =================================================================== -->
+          <section id="section-academic-analysis" class="academy-section d-none animate__animated animate__fadeIn">
+            <div class="card custom-card border-0 p-4 p-md-5 mb-4">
+              <div class="mb-4 border-bottom pb-4">
+                <span class="badge bg-purple text-white px-3 py-2 rounded-pill mb-2" style="background-color: #7952b3;">تحليل معمق</span>
+                <h2 class="fw-black mb-1">التحليل الأكاديمي المعمق (Analyse Technique de Bootstrap 5)</h2>
+                <p class="text-muted mb-0">دراسة هندسية متكاملة لآلية عمل إطار العمل داخلياً، ومقارنته المعيارية مع Tailwind CSS والـ CSS الصافي.</p>
+              </div>
+
+              <!-- Topic 1: Architecture & Internal Structure -->
+              <div class="mb-5">
+                <h4 class="fw-bold text-primary mb-3"><i class="bi bi-cpu me-1"></i> 1. الهيكلية الهندسية الداخلية (Architecture)</h4>
+                <div class="p-4 bg-body-tertiary rounded-4 border leading-relaxed">
+                  <p>يتكون Bootstrap 5 في جوهره من طبقات برمجية متراكبة:</p>
+                  <ul>
+                    <li><strong>طبقة إعادة التعيين (Reboot):</strong> مبنية على Normalize.css لتوحيد سلوك المتصفحات ومحو الفروق البدائية بين Chrome، Firefox وSafari.</li>
+                    <li><strong>طبقة المتغيرات (CSS Custom Properties):</strong> تعريف كافة الألوان والأبعاد والخطوط كمتغيرات <code>--bs-*</code> في أعلى الشجرة <code>:root</code>، مما يسمح بتغيير الثيم الليلي والنهاري في وقت التشغيل (Runtime) دون إعادة تحميل الصفحة.</li>
+                    <li><strong>طبقة الشبكة (CSS Flexbox & CSS Grid):</strong> خوارزمية تقسيم هندسية بـ 12 عموداً مرناً.</li>
+                    <li><strong>طبقة المكونات (UI Components):</strong> قوالب جاهزة (Cards, Modals, Navbar, Accordion).</li>
+                    <li><strong>طبقة الجافاسكريبت النقي (Vanilla JS Plugins):</strong> كائنات ومتحكمات مستقلة تماماً عن jQuery، تعتمد على Data Attributes مثل <code>data-bs-toggle</code>.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Topic 2: Comparison: Bootstrap vs Tailwind CSS vs Pure CSS -->
+              <div class="mb-5">
+                <h4 class="fw-bold text-success mb-3"><i class="bi bi-arrows-angle-contract me-1"></i> 2. مقارنة معيارية شاملة: Bootstrap مقابل Tailwind مقابل CSS العادي</h4>
+                <div class="table-responsive">
+                  <table class="table table-bordered bg-body align-middle text-center">
+                    <thead class="table-dark">
+                      <tr>
+                        <th>المعيار</th>
+                        <th>Bootstrap 5</th>
+                        <th>Tailwind CSS</th>
+                        <th>CSS الصافي (Vanilla CSS)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="fw-bold">فلسفة العمل</td>
+                        <td>مكونات جاهزة مسبقاً (Component-First)</td>
+                        <td>كلاسات ذرية مساعدة (Utility-First)</td>
+                        <td>كتابة من الصفر (From Scratch)</td>
+                      </tr>
+                      <tr>
+                        <td class="fw-bold">سرعة الإنتاج والتسليم</td>
+                        <td><span class="badge bg-success">فائقة السرعة</span></td>
+                        <td>متوسطة إلى سريعة</td>
+                        <td>بطيئة وتتطلب وقتاً طويلاً</td>
+                      </tr>
+                      <tr>
+                        <td class="fw-bold">الاعتماد على JavaScript</td>
+                        <td>مدمج بالكامل مع Popper.js</td>
+                        <td>لا يحتوي على JS (يحتاج كتابة يدوية)</td>
+                        <td>يحتاج كتابة كل التفاعلات من الصفر</td>
+                      </tr>
+                      <tr>
+                        <td class="fw-bold">دعم الهواتف (Responsive)</td>
+                        <td>شبكة متكاملة ونقاط توقف سهلة</td>
+                        <td>قوي عبر بوادئ sm: md: lg:</td>
+                        <td>يتطلب كتابة Media Queries يدوياً</td>
+                      </tr>
+                      <tr>
+                        <td class="fw-bold">سهولة الاستخدام للطلاب</td>
+                        <td><span class="badge bg-primary">مثالي وبسيط للتعلم</span></td>
+                        <td>يتطلب بيئة تجميع Node.js</td>
+                        <td>مهم لفهم الأساسيات</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Topic 3: Advantages & Disadvantages -->
+              <div class="mb-4">
+                <h4 class="fw-bold text-danger mb-3"><i class="bi bi-shield-check me-1"></i> 3. نقاط القوة ونقاط الضعف (Pros & Cons)</h4>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <div class="p-4 bg-success bg-opacity-10 border border-success rounded-4 h-100">
+                      <h5 class="fw-bold text-success mb-3"><i class="bi bi-plus-circle me-1"></i> المميزات (Advantages):</h5>
+                      <ul class="mb-0 leading-relaxed">
+                        <li>توثيق رسمي ممتاز ومجتمع دعم عالمي يضم ملايين المطورين.</li>
+                        <li>اختبار المكونات على مختلف الأجهزة والمتصفحات والتأكد من مطابقتها لمعايير سهولة الوصول WCAG.</li>
+                        <li>توفير آلاف الساعات البرمجية على المطورين والشركات.</li>
+                        <li>سهولة التضمين عبر سطر CDN واحد بدون أدوات بناء معقدة.</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="p-4 bg-danger bg-opacity-10 border border-danger rounded-4 h-100">
+                      <h5 class="fw-bold text-danger mb-3"><i class="bi bi-dash-circle me-1"></i> العيوب المحتملة وكيفية تلافيها (Disadvantages):</h5>
+                      <ul class="mb-0 leading-relaxed">
+                        <li>احتمال تشابه المواقع إذا لم يتم تخصيص الألوان (حللناها بملف style.css المخصص).</li>
+                        <li>تحميل كلاسات قد لا تستخدم كلها (يتم تلافيها في الإنتاج عبر Sass Tree Shaking).</li>
+                        <li>الاعتماد الزائد على الكلاسات الجاهزة دون فهم أساسيات CSS (لذا وفرنا هذا القسم التعليمي).</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- ===================================================================
+               SECTION 11: PRESENTATION (ملف العرض والمناقشة أمام الأستاذ)
+               =================================================================== -->
+          <section id="section-presentation" class="academy-section d-none animate__animated animate__fadeIn">
+            <div class="card custom-card border-0 p-4 p-md-5 mb-4">
+              <div class="mb-4 border-bottom pb-4">
+                <span class="badge bg-danger px-3 py-2 rounded-pill mb-2">الدليل الرسمي للمناقشة</span>
+                <h2 class="fw-black mb-1">دليل العرض الشفهي أمام الأستاذ واللجنة (Présentation de Soutenance)</h2>
+                <p class="text-muted mb-0">خطة تقديم احترافية متكاملة مقسمة بالدقائق مع نص الخطاب والمصطلحات التقنية والأسئلة المتوقعة.</p>
+              </div>
+
+              <!-- Presentation Outline -->
+              <div class="row g-4 mb-5">
+                <div class="col-md-6 col-lg-4">
+                  <div class="p-4 bg-body-tertiary border rounded-4 h-100">
+                    <span class="badge bg-primary mb-2">00:00 - 02:00</span>
+                    <h5 class="fw-bold">1. المقدمة (Introduction)</h5>
+                    <p class="small text-muted mb-0">تحية الأستاذ والزملاء، تقديم سياق المشروع المدرسي، والتعريف بموقع الأكاديمية التفاعلية.</p>
+                  </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                  <div class="p-4 bg-body-tertiary border rounded-4 h-100">
+                    <span class="badge bg-primary mb-2">02:00 - 05:00</span>
+                    <h5 class="fw-bold">2. الإشكالية والأهداف (Problématique)</h5>
+                    <p class="small text-muted mb-0">صعوبة فهم كلاسات بوتستراب بالحفظ الجاف، والهدف: بناء منصة بصرية تشرح الأكواد وتتيح التجربة الحية.</p>
+                  </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                  <div class="p-4 bg-body-tertiary border rounded-4 h-100">
+                    <span class="badge bg-primary mb-2">05:00 - 08:00</span>
+                    <h5 class="fw-bold">3. تبرير التكنولوجيا (Justification)</h5>
+                    <p class="small text-muted mb-0">لماذا Bootstrap 5؟ حذف jQuery، سرعة الإنتاجية، معايير السوق، ودعم الـ RTL الأصلي.</p>
+                  </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                  <div class="p-4 bg-body-tertiary border rounded-4 h-100">
+                    <span class="badge bg-success mb-2">08:00 - 12:00</span>
+                    <h5 class="fw-bold">4. العرض العملي المباشر (Live Demo)</h5>
+                    <p class="small text-muted mb-0">استعراض محاكي الشبكة، تجربة المختبر البرمجي، واختبار التجاوب أمام الأستاذ عبر F12.</p>
+                  </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                  <div class="p-4 bg-body-tertiary border rounded-4 h-100">
+                    <span class="badge bg-success mb-2">12:00 - 16:00</span>
+                    <h5 class="fw-bold">5. تحليل الكود والنتائج (Analyse)</h5>
+                    <p class="small text-muted mb-0">توضيح تناغم HTML5 و CSS3 و Bootstrap 5 و JS، وتوضيح كيفية تفادي الأخطاء الشائعة.</p>
+                  </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                  <div class="p-4 bg-body-tertiary border rounded-4 h-100">
+                    <span class="badge bg-purple text-white mb-2" style="background-color: #7952b3;">16:00 - 20:00</span>
+                    <h5 class="fw-bold">6. الخاتمة والأسئلة (Conclusion & Q&A)</h5>
+                    <p class="small text-muted mb-0">خلاصة المكتسبات، الآفاق المستقبلية (ربط Backend أو React)، والإجابة عن أسئلة الأستاذ بثقة.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Spoken Script Sample -->
+              <div class="p-4 bg-primary bg-opacity-10 border border-primary-subtle rounded-4 mb-4">
+                <h5 class="fw-bold text-primary mb-2"><i class="bi bi-mic-fill me-1"></i> نموذج ما تقوله أمام الأستاذ في الافتتاحية:</h5>
+                <p class="lead fs-6 text-body leading-relaxed mb-0">
+                  « السلام عليكم أستاذي الفاضل، زملائي الأعزاء. يشرفني اليوم أن أقدم لكم مشروعي بعنوان <strong>Bootstrap 5 Interactive Academy</strong>. 
+                  الهدف من المشروع هو تجاوز أسلوب الحفظ النظري لخصائص Bootstrap، وتقديم منصة تعليمية بصرية متكاملة تشرح كيفية عمل نظام الشبكة داخلياً، وتفكك الكود سطر بسطر، مع إمكانية تجربة الأكواد في مختبر حي ومباشر يثبت قوة التجاوب مع كل أنواع الشاشات. »
+                </p>
+              </div>
+
+              <!-- Top Defense Teacher Questions -->
+              <div class="card bg-body-tertiary border-0 p-4 rounded-4">
+                <h5 class="fw-bold text-primary mb-3"><i class="bi bi-question-circle-fill me-1"></i> أهم 3 أسئلة مفخخة يطرحها الأستاذ مع الإجابة السريعة:</h5>
+                
+                <div class="d-flex flex-column gap-3">
+                  <div class="p-3 bg-body rounded-3 border">
+                    <h6 class="fw-bold text-danger mb-1">سؤال 1: هل تستخدم نسختك مكتبة jQuery؟</h6>
+                    <p class="small text-success fw-bold mb-0">الجواب المباشر: لا نهائياً! Bootstrap 5 تخلت تماماً عن jQuery وتعتمد 100% على Vanilla JavaScript النقي والخفيف.</p>
+                  </div>
+                  <div class="p-3 bg-body rounded-3 border">
+                    <h6 class="fw-bold text-danger mb-1">سؤال 2: لماذا يُمنع وضع نص مباشرة في .row دون وسم .col؟</h6>
+                    <p class="small text-success fw-bold mb-0">الجواب المباشر: لأن كلاس .row يحمل هوامش سلبية (-15px)، ووسم .col هو المسؤول عن إعادة الـ Padding الداخلي لمنع التمرير الأفقي المشوه.</p>
+                  </div>
+                  <div class="p-3 bg-body rounded-3 border">
+                    <h6 class="fw-bold text-danger mb-1">سؤال 3: لماذا تم استبدال ml-auto بـ ms-auto؟</h6>
+                    <p class="small text-success fw-bold mb-0">الجواب المباشر: لدعم لغات اليمين لليسار (RTL مثل العربية) تلقائياً، حيث أصبحت Start تعني اليمين في العربية واليسار في اللغات اللاتينية.</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+        </main>
+
+        <!-- Global Footer -->
+        <footer class="border-top py-4 px-4 bg-body text-center text-muted small mt-auto">
+          <div class="container d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2">
+            <span><strong>Bootstrap 5 Interactive Academy</strong> · الأكاديمية التفاعلية لتعلم وإتقان بوتستراب</span>
+            <span>بناء تعليمي احترافي 100% · HTML5 · CSS3 · Bootstrap 5.3.3 · Vanilla JS</span>
+          </div>
+        </footer>
+
+      </div>
+    </div>
+
+    <!-- ===================================================================
+         CERTIFICATE MODAL (شهادة إتمام المسار)
+         =================================================================== -->
+    <div class="modal fade" id="certificateModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+          <div class="modal-header border-0 pb-0">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body p-4 p-md-5">
+            <div class="certificate-frame text-center">
+              <div class="d-inline-block p-3 bg-primary text-white rounded-circle fs-1 mb-3">
+                <i class="bi bi-award-fill"></i>
+              </div>
+              <h5 class="text-uppercase tracking-wider fw-bold text-primary mb-1">شهادة إتقان أكاديمية</h5>
+              <h1 class="display-6 fw-black mb-3">Certificate of Completion</h1>
+              <p class="text-muted mb-2">تشهد أكاديمية <strong>Bootstrap 5 Interactive Academy</strong> بأن الطالب(ة):</p>
+              <h2 class="display-5 fw-black text-primary my-3" id="cert-student-name">محمد علي</h2>
+              <p class="text-muted col-md-10 mx-auto mb-4">
+                قد أتم بنجاح كافة متطلبات مسار Bootstrap 5 الشامل (20 مرحلة)، واجتاز الاختبار النهائي والتقييم العملي للشبكات والمكونات المتجاوبة بدرجة امتياز:
+              </p>
+              <div class="d-inline-block px-4 py-2 bg-success text-white rounded-pill fw-bold fs-4 mb-4" id="cert-score">
+                100%
+              </div>
+              <div class="d-flex justify-content-between align-items-center border-top pt-4 text-muted small">
+                <div><strong>التاريخ:</strong> <span id="cert-date">11 نوفمبر 2025</span></div>
+                <div><strong>الاعتماد:</strong> Bootstrap 5.3.3 Certified Student</div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer border-0 pt-0 justify-content-center">
+            <button class="btn btn-primary rounded-pill px-4" onclick="window.print();">
+              <i class="bi bi-printer me-1"></i> طباعة الشهادة
+            </button>
+            <button class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">
+              إغلاق
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap 5.3.3 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom Academy JavaScript Engine -->
+    <script src="/js/main.js"></script>
+
+  </body>
+</html>
