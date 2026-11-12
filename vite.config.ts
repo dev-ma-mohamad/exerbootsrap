@@ -22,6 +22,18 @@ export default defineConfig(() => {
           main: path.resolve(__dirname, 'index.html'),
           coach: path.resolve(__dirname, 'coach.html'),
         },
+        output: {
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              if (id.includes('react') || id.includes('react-dom') || id.includes('scheduler')) {
+                return 'vendor-react';
+              }
+              if (id.includes('@supabase')) {
+                return 'vendor-supabase';
+              }
+            }
+          },
+        },
       },
     },
     server: {
