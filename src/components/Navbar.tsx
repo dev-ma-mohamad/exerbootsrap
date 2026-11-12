@@ -77,6 +77,14 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Quick Action Tools: Dark Mode & Code Files */}
           <div className="flex items-center gap-2.5 shrink-0">
+            <a
+              href="/"
+              className="hidden md:flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/60 text-xs sm:text-sm font-bold border border-blue-200 dark:border-blue-800 transition-colors"
+              title="العودة إلى الأكاديمية الرئيسية ومسار الـ 20 مرحلة"
+            >
+              <span>← الأكاديمية الرئيسية</span>
+            </a>
+
             <button
               onClick={toggleDarkMode}
               className="p-2.5 sm:p-3 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors border border-slate-200 dark:border-slate-700 cursor-pointer"

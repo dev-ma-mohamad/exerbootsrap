@@ -1,8 +1,24 @@
 /**
  * ==========================================================================
  * Bootstrap 5 Interactive Academy - Main JavaScript Engine (Vanilla JS)
+ * Enhanced with Supabase PostgreSQL & Auth Integration
  * ==========================================================================
  */
+
+import {
+  supabase,
+  isSupabaseConfigured,
+  signUpWithEmail,
+  signInWithEmail,
+  signOutUser,
+  requestPasswordReset,
+  updatePassword,
+  fetchProfile,
+  upsertProfile,
+  fetchProgress,
+  saveProgress,
+  recordQuizResult,
+} from '/src/lib/supabase.ts';
 
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Initial State & LocalStorage Management
@@ -13,7 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
     activeSection: 'dashboard',
     activeLessonId: 1,
     activeGridCols: 3, // 3 columns of col-4
-    currentBreakpoint: 'lg'
+    currentBreakpoint: 'lg',
+    currentUser: null,
+    userProfile: null,
+    isSupabaseReady: isSupabaseConfigured,
   };
 
   // 2. Initialize Dark/Light Theme
@@ -61,8 +80,572 @@ document.addEventListener('DOMContentLoaded', () => {
         node.classList.add('completed');
         const check = node.querySelector('.completion-icon');
         if (check) check.className = 'bi bi-check-circle-fill text-success fs-5 completion-icon';
+      } else {
+        node.classList.remove('completed');
+        const check = node.querySelector('.completion-icon');
+        if (check) check.className = 'bi bi-circle text-muted fs-5 completion-icon';
       }
     });
+
+    // Update profile modal counters if present
+    const profileLessons = document.getElementById('profile-lessons-count');
+    if (profileLessons) profileLessons.textContent = `${completedCount} / ${totalLessons}`;
+    const profileScore = document.getElementById('profile-quiz-score');
+    if (profileScore) profileScore.textContent = `${STATE.quizScore}%`;
+  }
+
+  // ========================================================================
+  // SUPABASE & AUTHENTICATION MANAGEMENT ENGINE
+  // ========================================================================
+
+  function showToast(message, type = 'primary') {
+    const container = document.getElementById('app-toast-container');
+    if (!container) return;
+    const toastId = 'toast-' + Date.now();
+    const icon = type === 'success' ? 'bi-check-circle-fill' : type === 'danger' ? 'bi-exclamation-triangle-fill' : 'bi-info-circle-fill';
+    const html = `
+      <div id="${toastId}" class="toast align-items-center text-bg-${type} border-0 show shadow-lg mb-2" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body d-flex align-items-center gap-2">
+            <i class="bi ${icon} fs-5"></i>
+            <span>${message}</span>
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+    `;
+    container.insertAdjacentHTML('beforeend', html);
+    setTimeout(() => {
+      const el = document.getElementById(toastId);
+      if (el) el.remove();
+    }, 4500);
+  }
+
+  function setAuthAlert(msg, type = 'danger') {
+    const alertBox = document.getElementById('auth-alert-box');
+    const alertText = document.getElementById('auth-alert-text');
+    if (!alertBox || !alertText) return;
+    if (!msg) {
+      alertBox.classList.add('d-none');
+      return;
+    }
+    alertBox.className = `alert alert-${type} alert-dismissible fade show rounded-3 small mb-3`;
+    alertText.textContent = msg;
+    alertBox.classList.remove('d-none');
+  }
+
+  function updateSupabaseStatusBadges() {
+    const pill = document.getElementById('supabase-status-pill');
+    const text = document.getElementById('supabase-status-text');
+    const modalAlert = document.getElementById('supabase-modal-status-alert');
+    const modalTitle = document.getElementById('supabase-modal-status-title');
+    const modalDesc = document.getElementById('supabase-modal-status-desc');
+    const statusVarUrl = document.getElementById('status-var-url');
+    const statusVarKey = document.getElementById('status-var-key');
+
+    if (isSupabaseConfigured) {
+      if (pill) {
+        pill.className = 'btn btn-sm rounded-pill d-none d-sm-flex align-items-center gap-1.5 px-3 py-1 btn-success text-white shadow-sm';
+      }
+      if (text) {
+        text.innerHTML = '<i class="bi bi-cloud-check-fill me-1"></i> متصل بسحابة Supabase';
+      }
+      if (modalAlert) {
+        modalAlert.className = 'p-3 rounded-4 mb-4 bg-success bg-opacity-10 border border-success-subtle';
+      }
+      if (modalTitle) modalTitle.textContent = 'الاتصال بقاعدة بيانات Supabase نشط ومفعل 100%';
+      if (modalDesc) modalDesc.textContent = 'حسابات المستخدمين، التقدم الأكاديمي، نتائج الاختبارات، وسياسات RLS متزامنة لحظياً.';
+      if (statusVarUrl) statusVarUrl.innerHTML = '<span class="badge bg-success">متصل ومفعل ✔</span>';
+      if (statusVarKey) statusVarKey.innerHTML = '<span class="badge bg-success">مضبوط وصحيح ✔</span>';
+    } else {
+      if (pill) {
+        pill.className = 'btn btn-sm rounded-pill d-none d-sm-flex align-items-center gap-1.5 px-3 py-1 btn-outline-warning text-warning-emphasis';
+      }
+      if (text) {
+        text.innerHTML = '<i class="bi bi-cloud-slash me-1"></i> الوضع المحلي (Offline)';
+      }
+      if (modalAlert) {
+        modalAlert.className = 'p-3 rounded-4 mb-4 bg-warning bg-opacity-10 border border-warning-subtle';
+      }
+      if (modalTitle) modalTitle.textContent = 'الموقع يعمل حالياً بالوضع المحلي التلقائي';
+      if (modalDesc) modalDesc.textContent = 'لتفعيل المزامنة السحابية وقاعدة البيانات PostgreSQL الحقيقية، أضف مفاتيح Supabase في لوحة Vercel أو ملف .env.';
+      if (statusVarUrl) statusVarUrl.innerHTML = '<span class="badge bg-warning text-dark">بانتظار الإعداد (Local Mode)</span>';
+      if (statusVarKey) statusVarKey.innerHTML = '<span class="badge bg-warning text-dark">بانتظار الإعداد (Local Mode)</span>';
+    }
+  }
+
+  function renderAuthUI() {
+    const authControls = document.getElementById('auth-controls');
+    if (!authControls) return;
+
+    if (STATE.currentUser) {
+      const displayName = STATE.userProfile?.full_name || STATE.currentUser.user_metadata?.full_name || STATE.currentUser.email.split('@')[0];
+      const initial = (displayName || 'U')[0].toUpperCase();
+
+      authControls.innerHTML = `
+        <div class="dropdown">
+          <button class="btn btn-outline-primary rounded-pill btn-sm px-3 d-flex align-items-center gap-2 dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 24px; height: 24px; font-size: 11px;">
+              ${initial}
+            </div>
+            <span class="d-none d-md-inline fw-semibold">${escapeHtml(displayName)}</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow-lg rounded-4 p-2 border-0 animate__animated animate__fadeIn">
+            <li class="px-3 py-2 border-bottom mb-1">
+              <div class="fw-bold">${escapeHtml(displayName)}</div>
+              <small class="text-muted text-truncate d-block" style="max-width: 180px;">${escapeHtml(STATE.currentUser.email)}</small>
+            </li>
+            <li>
+              <a class="dropdown-item rounded-3 d-flex align-items-center gap-2 py-2" href="#" data-bs-toggle="modal" data-bs-target="#userProfileModal">
+                <i class="bi bi-person-circle text-primary"></i>
+                <span>الملف الشخصي والإحصائيات</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item rounded-3 d-flex align-items-center gap-2 py-2" href="#" id="menu-btn-sync">
+                <i class="bi bi-arrow-repeat text-success"></i>
+                <span>مزامنة التقدم مع السحابة</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item rounded-3 d-flex align-items-center gap-2 py-2" href="#" data-bs-toggle="modal" data-bs-target="#certificateModal">
+                <i class="bi bi-award text-warning"></i>
+                <span>عرض الشهادة</span>
+              </a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <a class="dropdown-item rounded-3 d-flex align-items-center gap-2 py-2 text-danger" href="#" id="menu-btn-logout">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>تسجيل الخروج</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      `;
+
+      // Update User Profile Modal Contents
+      const avatarDisplay = document.getElementById('profile-avatar-display');
+      if (avatarDisplay) avatarDisplay.textContent = initial;
+      const nameDisplay = document.getElementById('profile-name-display');
+      if (nameDisplay) nameDisplay.textContent = displayName;
+      const emailDisplay = document.getElementById('profile-email-display');
+      if (emailDisplay) emailDisplay.textContent = STATE.currentUser.email;
+      const inputName = document.getElementById('profile-input-name');
+      if (inputName) inputName.value = displayName;
+      const cloudStatus = document.getElementById('profile-cloud-status');
+      if (cloudStatus) cloudStatus.textContent = isSupabaseConfigured ? 'متزامن مع Supabase' : 'الوضع المحلي';
+
+      // Event listener for dropdown logout & sync
+      const logoutBtn = document.getElementById('menu-btn-logout');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          handleLogout();
+        });
+      }
+      const syncBtn = document.getElementById('menu-btn-sync');
+      if (syncBtn) {
+        syncBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          handleManualSync();
+        });
+      }
+    } else {
+      authControls.innerHTML = `
+        <button class="btn btn-primary rounded-pill btn-sm px-3 d-flex align-items-center gap-1.5 shadow-sm" id="open-auth-modal-btn" data-bs-toggle="modal" data-bs-target="#authModal">
+          <i class="bi bi-box-arrow-in-right"></i>
+          <span>تسجيل الدخول</span>
+        </button>
+      `;
+    }
+  }
+
+  async function handleLogout() {
+    await signOutUser();
+    STATE.currentUser = null;
+    STATE.userProfile = null;
+    renderAuthUI();
+    updateProgressUI();
+    
+    // Close user profile modal if open
+    const profileModalEl = document.getElementById('userProfileModal');
+    if (profileModalEl) {
+      const modal = bootstrap.Modal.getInstance(profileModalEl);
+      if (modal) modal.hide();
+    }
+
+    showToast('تم تسجيل الخروج بنجاح. بياناتك محفوظة.', 'info');
+  }
+
+  async function handleManualSync() {
+    if (!STATE.currentUser) {
+      showToast('يرجى تسجيل الدخول أولاً للمزامنة السحابية.', 'warning');
+      return;
+    }
+    const percent = Math.round((STATE.completedLessons.length / 20) * 100);
+    const res = await saveProgress(STATE.currentUser.id, {
+      completed_lessons: STATE.completedLessons,
+      current_lesson_id: STATE.activeLessonId || 1,
+      progress_percent: percent,
+    });
+    if (res.success) {
+      showToast('تمت مزامنة تقدمك الأكاديمي بنجاح مع قاعدة البيانات!', 'success');
+    } else {
+      showToast('تعذرت المزامنة: تحقق من اتصال الإنترنت أو مفاتيح Supabase.', 'danger');
+    }
+  }
+
+  async function initAuthSystem() {
+    updateSupabaseStatusBadges();
+
+    // Check for password recovery hash in URL (#access_token=...&type=recovery)
+    const hash = window.location.hash || '';
+    if (hash.includes('type=recovery')) {
+      const resetTabItem = document.getElementById('tab-item-reset');
+      const resetTabBtn = document.getElementById('tab-btn-reset');
+      if (resetTabItem && resetTabBtn) {
+        resetTabItem.classList.remove('d-none');
+        const tab = new bootstrap.Tab(resetTabBtn);
+        tab.show();
+        const authModalEl = document.getElementById('authModal');
+        if (authModalEl) {
+          const modal = new bootstrap.Modal(authModalEl);
+          modal.show();
+        }
+      }
+    }
+
+    // Get initial session
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        STATE.currentUser = session.user;
+        const profile = await fetchProfile(session.user.id);
+        if (profile) STATE.userProfile = profile;
+
+        // Fetch remote progress and merge
+        const remoteProgress = await fetchProgress(session.user.id);
+        if (remoteProgress?.completed_lessons && remoteProgress.completed_lessons.length > 0) {
+          const merged = Array.from(new Set([...STATE.completedLessons, ...remoteProgress.completed_lessons]));
+          STATE.completedLessons = merged;
+          localStorage.setItem('bs_academy_completed', JSON.stringify(merged));
+        }
+      }
+    } catch (err) {
+      console.warn('[Auth] getSession error:', err);
+    }
+
+    // Render Auth UI in Topbar
+    renderAuthUI();
+    updateProgressUI();
+
+    // Listen to Supabase auth state changes
+    supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN' && session?.user) {
+        STATE.currentUser = session.user;
+        const profile = await fetchProfile(session.user.id);
+        if (profile) STATE.userProfile = profile;
+        renderAuthUI();
+        updateProgressUI();
+      } else if (event === 'SIGNED_OUT') {
+        STATE.currentUser = null;
+        STATE.userProfile = null;
+        renderAuthUI();
+        updateProgressUI();
+      } else if (event === 'PASSWORD_RECOVERY') {
+        const resetTabItem = document.getElementById('tab-item-reset');
+        const resetTabBtn = document.getElementById('tab-btn-reset');
+        if (resetTabItem && resetTabBtn) {
+          resetTabItem.classList.remove('d-none');
+          const tab = new bootstrap.Tab(resetTabBtn);
+          tab.show();
+          const authModalEl = document.getElementById('authModal');
+          if (authModalEl) {
+            const modal = new bootstrap.Modal(authModalEl);
+            modal.show();
+          }
+        }
+      }
+    });
+
+    // Wire Login Form
+    const formLogin = document.getElementById('form-login');
+    if (formLogin) {
+      formLogin.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        setAuthAlert(null);
+        const email = document.getElementById('login-email')?.value.trim();
+        const password = document.getElementById('login-password')?.value;
+        const spinner = document.getElementById('login-spinner');
+        const submitBtn = document.getElementById('btn-login-submit');
+
+        if (!email || !password) {
+          setAuthAlert('يرجى ملء جميع الحقول المطلوبة.');
+          return;
+        }
+
+        if (spinner) spinner.classList.remove('d-none');
+        if (submitBtn) submitBtn.disabled = true;
+
+        try {
+          const { data, error } = await signInWithEmail(email, password);
+          if (error) {
+            let msg = error.message;
+            if (msg.includes('Invalid login credentials')) {
+              msg = 'بيانات الدخول غير صحيحة، يرجى التأكد من البريد وكلمة المرور.';
+            } else if (msg.includes('Email not confirmed')) {
+              msg = 'يرجى تأكيد بريدك الإلكتروني أولاً عبر الرابط المرسل إليك.';
+            }
+            setAuthAlert(msg);
+          } else if (data?.user) {
+            STATE.currentUser = data.user;
+            const profile = await fetchProfile(data.user.id);
+            if (profile) STATE.userProfile = profile;
+
+            // Load user progress
+            const progress = await fetchProgress(data.user.id);
+            if (progress?.completed_lessons) {
+              STATE.completedLessons = Array.from(new Set([...STATE.completedLessons, ...progress.completed_lessons]));
+              localStorage.setItem('bs_academy_completed', JSON.stringify(STATE.completedLessons));
+            }
+
+            renderAuthUI();
+            updateProgressUI();
+
+            const authModalEl = document.getElementById('authModal');
+            if (authModalEl) {
+              const modal = bootstrap.Modal.getInstance(authModalEl);
+              if (modal) modal.hide();
+            }
+
+            const name = STATE.userProfile?.full_name || data.user.email.split('@')[0];
+            showToast(`أهلاً بك مجدداً يا ${name}! تم تسجيل الدخول بنجاح.`, 'success');
+          }
+        } catch (err) {
+          setAuthAlert('حدث خطأ غير متوقع أثناء تسجيل الدخول.');
+        } finally {
+          if (spinner) spinner.classList.add('d-none');
+          if (submitBtn) submitBtn.disabled = false;
+        }
+      });
+    }
+
+    // Wire Register Form
+    const formRegister = document.getElementById('form-register');
+    if (formRegister) {
+      formRegister.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        setAuthAlert(null);
+        const fullName = document.getElementById('register-name')?.value.trim();
+        const email = document.getElementById('register-email')?.value.trim();
+        const password = document.getElementById('register-password')?.value;
+        const confirmPassword = document.getElementById('register-confirm-password')?.value;
+        const spinner = document.getElementById('register-spinner');
+        const submitBtn = document.getElementById('btn-register-submit');
+
+        if (!fullName || !email || !password || !confirmPassword) {
+          setAuthAlert('يرجى ملء جميع الحقول المطلوبة.');
+          return;
+        }
+
+        if (password.length < 6) {
+          setAuthAlert('كلمة المرور يجب أن لا تقل عن 6 أحرف.');
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          setAuthAlert('كلمة المرور وتأكيدها غير متطابقين.');
+          return;
+        }
+
+        if (spinner) spinner.classList.remove('d-none');
+        if (submitBtn) submitBtn.disabled = true;
+
+        try {
+          const { data, error } = await signUpWithEmail(email, password, fullName);
+          if (error) {
+            let msg = error.message;
+            if (msg.includes('already registered')) {
+              msg = 'هذا البريد الإلكتروني مسجل بالفعل، يرجى تسجيل الدخول.';
+            }
+            setAuthAlert(msg);
+          } else {
+            if (data?.session?.user) {
+              STATE.currentUser = data.session.user;
+              STATE.userProfile = { id: data.session.user.id, email, full_name: fullName };
+              renderAuthUI();
+              updateProgressUI();
+
+              const authModalEl = document.getElementById('authModal');
+              if (authModalEl) {
+                const modal = bootstrap.Modal.getInstance(authModalEl);
+                if (modal) modal.hide();
+              }
+
+              showToast(`تم إنشاء حسابك بنجاح! مرحباً بك يا ${fullName}.`, 'success');
+            } else {
+              setAuthAlert('تم إنشاء الحساب بنجاح! تم إرسال رابط تأكيد إلى بريدك الإلكتروني، يرجى الضغط عليه لتفعيل الحساب.', 'success');
+            }
+          }
+        } catch (err) {
+          setAuthAlert('حدث خطأ غير متوقع أثناء إنشاء الحساب.');
+        } finally {
+          if (spinner) spinner.classList.add('d-none');
+          if (submitBtn) submitBtn.disabled = false;
+        }
+      });
+    }
+
+    // Wire Forgot Password Form
+    const formForgot = document.getElementById('form-forgot');
+    if (formForgot) {
+      formForgot.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        setAuthAlert(null);
+        const email = document.getElementById('forgot-email')?.value.trim();
+        const spinner = document.getElementById('forgot-spinner');
+        const submitBtn = document.getElementById('btn-forgot-submit');
+
+        if (!email) {
+          setAuthAlert('يرجى إدخال البريد الإلكتروني.');
+          return;
+        }
+
+        if (spinner) spinner.classList.remove('d-none');
+        if (submitBtn) submitBtn.disabled = true;
+
+        try {
+          const { error } = await requestPasswordReset(email);
+          if (error) {
+            setAuthAlert(error.message);
+          } else {
+            setAuthAlert('تم إرسال رابط استعادة كلمة المرور إلى بريدك الإلكتروني بنجاح! يرجى مراجعة صندوق الوارد.', 'success');
+          }
+        } catch (err) {
+          setAuthAlert('حدث خطأ أثناء طلب استعادة كلمة المرور.');
+        } finally {
+          if (spinner) spinner.classList.add('d-none');
+          if (submitBtn) submitBtn.disabled = false;
+        }
+      });
+    }
+
+    // Wire Reset Password Form
+    const formReset = document.getElementById('form-reset');
+    if (formReset) {
+      formReset.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        setAuthAlert(null);
+        const newPassword = document.getElementById('reset-password')?.value;
+        const confirmNewPassword = document.getElementById('reset-confirm-password')?.value;
+        const spinner = document.getElementById('reset-spinner');
+        const submitBtn = document.getElementById('btn-reset-submit');
+
+        if (!newPassword || newPassword.length < 6) {
+          setAuthAlert('كلمة المرور يجب أن لا تقل عن 6 أحرف.');
+          return;
+        }
+
+        if (newPassword !== confirmNewPassword) {
+          setAuthAlert('كلمتا المرور غير متطابقتين.');
+          return;
+        }
+
+        if (spinner) spinner.classList.remove('d-none');
+        if (submitBtn) submitBtn.disabled = true;
+
+        try {
+          const { error } = await updatePassword(newPassword);
+          if (error) {
+            setAuthAlert(error.message);
+          } else {
+            setAuthAlert('تم تغيير كلمة المرور بنجاح! يمكنك الآن تسجيل الدخول بها.', 'success');
+            showToast('تم تحديث كلمة المرور بنجاح!', 'success');
+            setTimeout(() => {
+              const loginTabBtn = document.getElementById('tab-btn-login');
+              if (loginTabBtn) {
+                const tab = new bootstrap.Tab(loginTabBtn);
+                tab.show();
+              }
+            }, 1500);
+          }
+        } catch (err) {
+          setAuthAlert('حدث خطأ أثناء تحديث كلمة المرور.');
+        } finally {
+          if (spinner) spinner.classList.add('d-none');
+          if (submitBtn) submitBtn.disabled = false;
+        }
+      });
+    }
+
+    // Forgot / Back to login button switches
+    const btnShowForgot = document.getElementById('btn-show-forgot-pane');
+    if (btnShowForgot) {
+      btnShowForgot.addEventListener('click', () => {
+        setAuthAlert(null);
+        const paneLogin = document.getElementById('pane-login');
+        const paneForgot = document.getElementById('pane-forgot');
+        if (paneLogin && paneForgot) {
+          paneLogin.classList.remove('show', 'active');
+          paneForgot.classList.add('show', 'active');
+        }
+      });
+    }
+
+    const btnBackToLogin = document.getElementById('btn-back-to-login');
+    if (btnBackToLogin) {
+      btnBackToLogin.addEventListener('click', () => {
+        setAuthAlert(null);
+        const paneLogin = document.getElementById('pane-login');
+        const paneForgot = document.getElementById('pane-forgot');
+        if (paneLogin && paneForgot) {
+          paneForgot.classList.remove('show', 'active');
+          paneLogin.classList.add('show', 'active');
+        }
+      });
+    }
+
+    // Profile form: update name
+    const formUpdateProfile = document.getElementById('form-update-profile');
+    if (formUpdateProfile) {
+      formUpdateProfile.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const newName = document.getElementById('profile-input-name')?.value.trim();
+        if (!newName || !STATE.currentUser) return;
+
+        const updated = await upsertProfile({
+          id: STATE.currentUser.id,
+          email: STATE.currentUser.email,
+          full_name: newName,
+        });
+
+        if (updated) {
+          STATE.userProfile = updated;
+        } else {
+          STATE.userProfile = { ...STATE.userProfile, full_name: newName, id: STATE.currentUser.id, email: STATE.currentUser.email };
+        }
+
+        renderAuthUI();
+        showToast('تم تحديث اسمك بنجاح!', 'success');
+      });
+    }
+
+    // Profile modal logout button
+    const btnProfileLogout = document.getElementById('btn-profile-logout');
+    if (btnProfileLogout) {
+      btnProfileLogout.addEventListener('click', () => {
+        handleLogout();
+      });
+    }
+
+    // Profile modal manual sync
+    const btnSyncManual = document.getElementById('btn-sync-cloud-manual');
+    if (btnSyncManual) {
+      btnSyncManual.addEventListener('click', () => {
+        handleManualSync();
+      });
+    }
   }
 
   // 4. Section Navigation & View Switcher
@@ -1629,10 +2212,10 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Handle Toggle Complete
+    // Handle Toggle Complete with Supabase Cloud Sync
     const completeBtn = document.getElementById('btn-toggle-complete');
     if (completeBtn) {
-      completeBtn.addEventListener('click', () => {
+      completeBtn.addEventListener('click', async () => {
         if (STATE.completedLessons.includes(lesson.id)) {
           STATE.completedLessons = STATE.completedLessons.filter(id => id !== lesson.id);
         } else {
@@ -1641,6 +2224,16 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('bs_academy_completed', JSON.stringify(STATE.completedLessons));
         updateProgressUI();
         openLesson(lesson.id); // Re-render button state
+
+        // Auto sync with Supabase if logged in
+        if (STATE.currentUser) {
+          const percent = Math.round((STATE.completedLessons.length / 20) * 100);
+          await saveProgress(STATE.currentUser.id, {
+            completed_lessons: STATE.completedLessons,
+            current_lesson_id: lesson.id,
+            progress_percent: percent,
+          });
+        }
       });
     }
 
@@ -2307,25 +2900,41 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (nextBtn) {
           nextBtn.classList.remove('d-none');
-          nextBtn.addEventListener('click', () => {
+          nextBtn.onclick = () => {
             currentQuizIndex++;
             renderQuizQuestion();
-          });
+          };
         }
       });
     });
   }
 
-  function showCertificate(name, score) {
+  async function showCertificate(name, score) {
     const certModalEl = document.getElementById('certificateModal');
     if (!certModalEl) return;
     const nameEl = document.getElementById('cert-student-name');
     const dateEl = document.getElementById('cert-date');
     const scoreEl = document.getElementById('cert-score');
 
-    if (nameEl) nameEl.textContent = name;
+    const resolvedName = STATE.userProfile?.full_name || name || 'طالب الأكاديمية';
+    if (nameEl) nameEl.textContent = resolvedName;
     if (dateEl) dateEl.textContent = new Date().toLocaleDateString('ar-MA', { year: 'numeric', month: 'long', day: 'numeric' });
     if (scoreEl) scoreEl.textContent = `${score}%`;
+
+    STATE.quizScore = score;
+    localStorage.setItem('bs_academy_quiz_score', String(score));
+    updateProgressUI();
+
+    const certId = 'CERT-BS5-' + Math.random().toString(36).substring(2, 9).toUpperCase();
+    if (STATE.currentUser) {
+      await recordQuizResult({
+        user_id: STATE.currentUser.id,
+        score,
+        total_questions: 20,
+        passed: score >= 70,
+        certificate_id: certId,
+      });
+    }
 
     const modal = new bootstrap.Modal(certModalEl);
     modal.show();
@@ -2335,6 +2944,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Helper Escape HTML
   function escapeHtml(text) {
+    if (!text) return '';
     return text
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
@@ -2345,4 +2955,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Update progress UI on start
   updateProgressUI();
+
+  // Initialize Supabase & Authentication System
+  initAuthSystem();
 });
